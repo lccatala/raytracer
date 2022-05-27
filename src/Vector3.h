@@ -5,55 +5,54 @@
 
 using std::sqrt;
 
-class Vector3
+struct Vector3
 {
-    public:
-        Vector3()
-            : e{0, 0, 0} {}
-        Vector3(double e0, double e1, double e2) : e{e0, e1, e2} {}
+    Vector3()
+        : e{0, 0, 0} {}
+    Vector3(double e0, double e1, double e2) : e{e0, e1, e2} {}
 
-        double x() const { return e[0]; }
-        double y() const { return e[1]; }
-        double z() const { return e[2]; }
+    double x() const { return e[0]; }
+    double y() const { return e[1]; }
+    double z() const { return e[2]; }
 
-        Vector3 operator-() const { return Vector3(-e[0], -e[1], -e[2]); }
-        double operator[](int i) const { return e[i]; }
-        double& operator[](int i) { return e[i]; }
+    Vector3 operator-() const { return Vector3(-e[0], -e[1], -e[2]); }
+    double operator[](int i) const { return e[i]; }
+    double& operator[](int i) { return e[i]; }
 
-        Vector3& operator+=(const Vector3& v)
-        {
-            e[0] += v.e[0];
-            e[1] += v.e[1];
-            e[2] += v.e[2];
-            return *this;
-        }
-
-
-        Vector3& operator*=(const double t)
-        {
-            e[0] *= t;
-            e[1] *= t;
-            e[2] *= t;
-            return *this;
-        }
-
-        Vector3& operator/=(const double t)
-        {
-            return *this *= 1/t;
-        }
-
-        double Length() const
-        {
-            return sqrt(LengthSquared());
-        }
-
-        double LengthSquared() const
-        {
-            return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
-        }
+    Vector3& operator+=(const Vector3& v)
+    {
+        e[0] += v.e[0];
+        e[1] += v.e[1];
+        e[2] += v.e[2];
+        return *this;
+    }
 
 
-        double e[3];
+    Vector3& operator*=(const double t)
+    {
+        e[0] *= t;
+        e[1] *= t;
+        e[2] *= t;
+        return *this;
+    }
+
+    Vector3& operator/=(const double t)
+    {
+        return *this *= 1/t;
+    }
+
+    double Length() const
+    {
+        return sqrt(LengthSquared());
+    }
+
+    double LengthSquared() const
+    {
+        return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
+    }
+
+
+    double e[3];
 };
 
 using Point3 = Vector3;
