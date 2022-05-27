@@ -4,10 +4,24 @@
 #include "Vector3.h"
 #include "Ray.h"
 
+bool HitSphere(const Point3& center, double radius, const Ray& r)
+{
+    Vector3 oc = r.Origin - center;
+    double a = Dot(r.Direction, r.Direction);
+    double b = 2.0 * Dot(oc, r.Direction);
+    double c = Dot(oc, oc) - radius*radius;
+    double discriminant = b*b - 4*a*c;
+    return (discriminant > 0);
+}
+
 // Linearly blend white and blue depending on Y coordinate
 // after scaling Y to be between -1 and 1
 Color RayColor(const Ray& r)
 {
+    if (HitSphere(Point3(0,0,-1), 0.5, r))
+    {
+        return Color(1,0,0);
+    }
     Vector3 unitDirection = UnitVector(r.Direction);
     auto t = 0.5 * (unitDirection.y() + 1.0);
     return (1.0-t) * Color(1.0, 1.0, 1.0) + t*Color(0.5, 0.7, 1.0);
