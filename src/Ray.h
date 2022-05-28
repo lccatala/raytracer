@@ -9,6 +9,11 @@ struct Ray
         : Origin(origin), Direction(direction)
     {}
 
+    Point3 At(double t) const
+    {
+        return Origin + t*Direction;
+    }
+
     Point3 Origin;
     Vector3 Direction;
 };

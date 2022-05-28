@@ -51,6 +51,18 @@ struct Vector3
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
 
+    inline static Vector3 Random()
+    {
+        return Vector3(RandomDouble(), RandomDouble(), RandomDouble());
+    }
+
+    inline static Vector3 Random(double min, double max)
+    {
+        return Vector3(
+                RandomDouble(min, max),
+                RandomDouble(min, max),
+                RandomDouble(min, max));
+    }
 
     double e[3];
 };
@@ -103,4 +115,34 @@ inline double Dot(const Vector3& u, const Vector3& v)
 inline Vector3 UnitVector(Vector3 v)
 {
     return v / v.Length();
+}
+
+Vector3 RandomInUnitSphere()
+{
+    while (true)
+    {
+        Vector3 p = Vector3::Random(-1, 1);
+        if (p.LengthSquared() < 1.0)
+        {
+            return p;
+        }
+    }
+}
+
+Vector3 RandomUnitVector()
+{
+    return UnitVector(RandomInUnitSphere());
+}
+
+Vector3 RandomInHemisphere(const Vector3& normal)
+{
+    Vector3 inUnitSphere = RandomInUnitSphere();
+    if (Dot(inUnitSphere, normal) > 0.0) // In the same hemisphere as the normal
+    {
+        return inUnitSphere;
+    }
+    else
+    {
+        return -inUnitSphere;
+    }
 }
