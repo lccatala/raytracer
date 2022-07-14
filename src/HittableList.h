@@ -1,5 +1,6 @@
 #pragma once
 
+#include "rtweekend.h"
 #include "Hittable.h"
 
 #include <memory>

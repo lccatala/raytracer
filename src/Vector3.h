@@ -64,6 +64,12 @@ struct Vector3
                 RandomDouble(min, max));
     }
 
+    bool NearZero() const
+    {
+        const double s = 1e-8;
+        return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2] < s));
+    }
+
     double e[3];
 };
 
@@ -112,6 +118,14 @@ inline double Dot(const Vector3& u, const Vector3& v)
          + u.e[2] * v.e[2];
 }
 
+inline Vector3 Cross(const Vector3& u, const Vector3& v)
+{
+    return Vector3(
+            u.e[1] * v.e[2] - u.e[2] * u.e[1],
+            u.e[2] * v.e[0] - u.e[0] * v.e[2],
+            u.e[0] * v.e[1] - u.e[1] * v.e[0]);
+}
+
 inline Vector3 UnitVector(Vector3 v)
 {
     return v / v.Length();
@@ -144,5 +158,30 @@ Vector3 RandomInHemisphere(const Vector3& normal)
     else
     {
         return -inUnitSphere;
+    }
+}
+
+Vector3 Reflect(const Vector3& v, const Vector3& n)
+{
+    return v - 2*Dot(v, n)*n;
+}
+
+Vector3 Refract(const Vector3& uv, const Vector3& n, double etaiOverEtat)
+{
+    double cosTheta = fmin(Dot(-uv, n), 1.0);
+    Vector3 rOutPerp = etaiOverEtat * (uv + cosTheta*n);
+    Vector3 rOutParallel = -sqrt(fabs(1.0 - rOutPerp.LengthSquared())) * n;
+    return rOutPerp + rOutParallel;
+}
+
+Vector3 RandomInUnitDisk()
+{
+    while (true)
+    {
+        Vector3 p = Vector3(RandomDouble(-1, 1), RandomDouble(-1, 1), 0);
+        if (p.Length() < 1)
+        {
+            return p;
+        }
     }
 }

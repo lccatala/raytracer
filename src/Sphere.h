@@ -6,8 +6,8 @@
 struct Sphere : Hittable
 {
     Sphere() {}
-    Sphere(Point3 center, double radius)
-        : Center(center), Radius(radius) {};
+    Sphere(Point3 center, double radius, shared_ptr<Material> materialPtr)
+        : Center(center), Radius(radius), MaterialPtr(materialPtr) {};
 
     virtual bool Hit(const Ray& r,
                      double tMin,
@@ -16,6 +16,7 @@ struct Sphere : Hittable
 
     Point3 Center;
     double Radius;
+    shared_ptr<Material> MaterialPtr;
 };
 
 bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& rec) const
@@ -47,6 +48,7 @@ bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& rec) const
     rec.P = r.At(rec.T);
     Vector3 outwardNormal = (rec.P - Center) / Radius;
     rec.SetFaceNormal(r, outwardNormal);
+    rec.MaterialPtr = MaterialPtr;
 
     return true;
 }
